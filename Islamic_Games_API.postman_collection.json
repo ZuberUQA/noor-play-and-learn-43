@@ -1,0 +1,644 @@
+
+{
+  "info": {
+    "_postman_id": "9c83e2de-f5a1-4b0d-b35e-3e5d2e45f2c8",
+    "name": "Islamic Games API",
+    "description": "API collection for the Islamic Games application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login a user"
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"adminpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "admin", "login"]
+            },
+            "description": "Login as admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Get current user information"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints for the Islamic Games application"
+    },
+    {
+      "name": "Games",
+      "item": [
+        {
+          "name": "Get All Games",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/games",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games"]
+            },
+            "description": "Get all games"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Game by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}"]
+            },
+            "description": "Get a specific game by slug"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Game (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Islamic Trivia\",\n    \"description\": \"Test your knowledge with Islamic trivia questions\",\n    \"difficulty\": \"medium\",\n    \"category\": \"Knowledge\",\n    \"gameType\": \"quiz\",\n    \"slug\": \"islamic-trivia\",\n    \"iconName\": \"HelpCircle\",\n    \"isActive\": true,\n    \"comingSoon\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/games",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games"]
+            },
+            "description": "Create a new game (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Game (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Updated Islamic Trivia\",\n    \"description\": \"Updated description for the game\",\n    \"difficulty\": \"easy\",\n    \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameId}}"]
+            },
+            "description": "Update a game (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Game (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameId}}"]
+            },
+            "description": "Delete a game (admin only)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Game management endpoints"
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Get Questions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}/questions?difficulty=medium&limit=10&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}", "questions"],
+              "query": [
+                {
+                  "key": "difficulty",
+                  "value": "medium"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Get questions for a specific game"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Random Questions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}/questions/random?count=5&difficulty=easy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}", "questions", "random"],
+              "query": [
+                {
+                  "key": "count",
+                  "value": "5"
+                },
+                {
+                  "key": "difficulty",
+                  "value": "easy"
+                }
+              ]
+            },
+            "description": "Get random questions for a game"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Question by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}/questions/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}", "questions", "{{questionId}}"]
+            },
+            "description": "Get a specific question by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create True/False Question (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Prayer (Salah) is one of the five pillars of Islam.\",\n    \"isTrue\": true,\n    \"explanation\": \"Prayer (Salah) is indeed one of the five pillars of Islam along with faith (Shahada), charity (Zakat), fasting (Sawm), and pilgrimage (Hajj).\",\n    \"difficulty\": \"easy\",\n    \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/games/true-or-false/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "true-or-false", "questions"]
+            },
+            "description": "Create a new true/false question (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Multiple Choice Question (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question\": \"Which of the following is NOT a pillar of Islam?\",\n    \"options\": [\"Prayer (Salah)\", \"Charity (Zakat)\", \"Fasting (Sawm)\", \"Wudu (Ablution)\"],\n    \"correctOptionIndex\": 3,\n    \"explanation\": \"Wudu (Ablution) is not one of the five pillars of Islam. The five pillars are faith (Shahada), prayer (Salah), charity (Zakat), fasting (Sawm), and pilgrimage (Hajj).\",\n    \"difficulty\": \"medium\",\n    \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/games/quiz-duel/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "quiz-duel", "questions"]
+            },
+            "description": "Create a new multiple choice question (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Question (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Updated question text\",\n    \"isTrue\": false,\n    \"explanation\": \"Updated explanation\",\n    \"difficulty\": \"hard\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}/questions/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}", "questions", "{{questionId}}"]
+            },
+            "description": "Update a question (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Question (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/games/{{gameSlug}}/questions/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "games", "{{gameSlug}}", "questions", "{{questionId}}"]
+            },
+            "description": "Delete a question (admin only)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Question management endpoints"
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", "{{userId}}"]
+            },
+            "description": "Get a user's profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"updatedUsername\",\n    \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", "{{userId}}"]
+            },
+            "description": "Update a user's profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User Account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile", "{{userId}}"]
+            },
+            "description": "Delete a user's account"
+          },
+          "response": []
+        }
+      ],
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Progress",
+      "item": [
+        {
+          "name": "Get User Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress"]
+            },
+            "description": "Get user's overall progress"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Game Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress/{{gameSlug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress", "{{gameSlug}}"]
+            },
+            "description": "Get user's progress for a specific game"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Game Progress",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"score\": 85,\n    \"questionsAttempted\": 10,\n    \"questionsCorrect\": 8,\n    \"timeSpent\": 300,\n    \"level\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/progress/{{gameSlug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress", "{{gameSlug}}"]
+            },
+            "description": "Update user's progress for a specific game"
+          },
+          "response": []
+        }
+      ],
+      "description": "User progress tracking endpoints"
+    },
+    {
+      "name": "Word of the Day",
+      "item": [
+        {
+          "name": "Get Today's Word",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/word-of-the-day/today",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "word-of-the-day", "today"]
+            },
+            "description": "Get the word of the day for today"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Word by Date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/word-of-the-day/date/2024-04-11",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "word-of-the-day", "date", "2024-04-11"]
+            },
+            "description": "Get the word of the day for a specific date"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Word (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"arabicWord\": \"سلام\",\n    \"englishTranslation\": \"Peace\",\n    \"pronunciation\": \"Salaam\",\n    \"example\": \"السلام عليكم (As-salamu alaykum) means 'Peace be upon you' in Arabic.\",\n    \"date\": \"2024-04-12\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/word-of-the-day",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "word-of-the-day"]
+            },
+            "description": "Create a new word of the day (admin only)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Word of the Day feature endpoints"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "your_user_jwt_token",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "your_admin_jwt_token",
+      "type": "string"
+    },
+    {
+      "key": "gameSlug",
+      "value": "true-or-false",
+      "type": "string"
+    },
+    {
+      "key": "gameId",
+      "value": "game_id",
+      "type": "string"
+    },
+    {
+      "key": "questionId",
+      "value": "question_id",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "user_id",
+      "type": "string"
+    }
+  ]
+}
