@@ -17,12 +17,9 @@ router.get('/:gameSlug/questions', getQuestions);
 router.get('/:gameSlug/questions/random', getRandomQuestions);
 router.get('/:gameSlug/questions/:questionId', getQuestion);
 
-// Admin routes
-router.use(protect);
-router.use(authorize('admin'));
-
-router.post('/:gameSlug/questions', createQuestion);
-router.put('/:gameSlug/questions/:questionId', updateQuestion);
-router.delete('/:gameSlug/questions/:questionId', deleteQuestion);
+// Admin routes - Make sure protect and authorize are applied correctly
+router.post('/:gameSlug/questions', protect, authorize('admin'), createQuestion);
+router.put('/:gameSlug/questions/:questionId', protect, authorize('admin'), updateQuestion);
+router.delete('/:gameSlug/questions/:questionId', protect, authorize('admin'), deleteQuestion);
 
 export default router;

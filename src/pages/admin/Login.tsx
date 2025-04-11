@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
+import { authService } from '@/services/api';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -29,19 +30,10 @@ const AdminLogin = () => {
   
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // In a real app, replace this with actual API call
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      });
+      // Use authService to login instead of direct fetch
+      const response = await authService.login(values);
       
-      // For demo purposes (replace with actual logic):
+      // For demo purposes, also check hardcoded credentials
       if (values.email === 'admin@example.com' && values.password === 'password123') {
         // Store token (would come from the backend in a real app)
         localStorage.setItem('adminToken', 'demo-token');
@@ -52,17 +44,27 @@ const AdminLogin = () => {
         });
         
         navigate('/admin/dashboard');
+      } else if (response && response.user.role === 'admin') {
+        // If the user is authenticated through the API and is an admin
+        localStorage.setItem('adminToken', response.token);
+        
+        toast({
+          title: "Login successful",
+          description: "Welcome to the admin panel",
+        });
+        
+        navigate('/admin/dashboard');
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid email or password",
+          description: "You need admin privileges to access this panel",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
         title: "Login failed",
-        description: "An error occurred during login",
+        description: "An error occurred during login. Please check your credentials.",
         variant: "destructive",
       });
     }

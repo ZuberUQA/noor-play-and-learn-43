@@ -15,14 +15,11 @@ const router = express.Router();
 // Public routes
 router.get('/', getAllGames);
 router.get('/:slug', getGameBySlug);
+router.get('/id/:id', getGameById); // Make getGameById accessible without auth for convenience
 
-// Admin routes
-router.use(protect);
-router.use(authorize('admin'));
-
-router.post('/', createGame);
-router.put('/:id', updateGame);
-router.delete('/:id', deleteGame);
-router.get('/id/:id', getGameById); // Add specific route for getting game by ID
+// Admin routes - protected
+router.post('/', protect, authorize('admin'), createGame);
+router.put('/:id', protect, authorize('admin'), updateGame);
+router.delete('/:id', protect, authorize('admin'), deleteGame);
 
 export default router;

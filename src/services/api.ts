@@ -57,15 +57,6 @@ export const authService = {
     return response.data;
   },
   
-  adminLogin: async (credentials: { email: string; password: string }) => {
-    const response = await apiClient.post('/auth/admin/login', credentials);
-    if (response.data.token) {
-      localStorage.setItem('adminToken', response.data.token);
-      localStorage.setItem('admin', JSON.stringify(response.data.user));
-    }
-    return response.data;
-  },
-  
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
