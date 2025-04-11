@@ -6,6 +6,7 @@ import {
   createGame,
   updateGame,
   deleteGame,
+  getGameById,
 } from '../controllers/game.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -22,5 +23,6 @@ router.use(authorize('admin'));
 router.post('/', createGame);
 router.put('/:id', updateGame);
 router.delete('/:id', deleteGame);
+router.get('/id/:id', getGameById); // Add specific route for getting game by ID
 
 export default router;

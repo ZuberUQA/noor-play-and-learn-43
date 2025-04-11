@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Create an axios instance
@@ -29,6 +28,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.error('API Error:', error.response?.data || error.message);
     // Handle authentication errors
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('token');
@@ -95,7 +95,7 @@ export const gameService = {
   },
   
   getGameById: async (id: string) => {
-    const response = await apiClient.get(`/games/${id}`);
+    const response = await apiClient.get(`/games/id/${id}`);
     return response.data;
   },
   
