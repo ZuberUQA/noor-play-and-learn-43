@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { gameService } from '@/services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -63,6 +63,7 @@ const EditGame = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -89,30 +90,36 @@ const EditGame = () => {
       }
       return Promise.reject(new Error('Game ID is required'));
     },
-    onSuccess: (data) => {
-      if (data?.data) {
-        // Populate form with game data
-        form.reset({
-          title: data.data.title,
-          description: data.data.description,
-          difficulty: data.data.difficulty,
-          category: data.data.category,
-          gameType: data.data.gameType,
-          slug: data.data.slug,
-          iconName: data.data.iconName,
-          isActive: data.data.isActive,
-          comingSoon: data.data.comingSoon,
-        });
-      }
-    },
-    onError: (error) => {
+  });
+  
+  // Use useEffect to populate form when data is available
+  useEffect(() => {
+    if (gameData?.data) {
+      // Populate form with game data
+      form.reset({
+        title: gameData.data.title,
+        description: gameData.data.description,
+        difficulty: gameData.data.difficulty,
+        category: gameData.data.category,
+        gameType: gameData.data.gameType,
+        slug: gameData.data.slug,
+        iconName: gameData.data.iconName,
+        isActive: gameData.data.isActive,
+        comingSoon: gameData.data.comingSoon,
+      });
+    }
+  }, [gameData, form]);
+
+  // Handle errors
+  useEffect(() => {
+    if (error) {
       toast({
         title: "Error",
         description: "Failed to fetch game details",
         variant: "destructive",
       });
     }
-  });
+  }, [error, toast]);
   
   const onSubmit = async (values: FormValues) => {
     try {
@@ -125,6 +132,10 @@ const EditGame = () => {
         title: "Success",
         description: "Game updated successfully",
       });
+      
+      // Invalidate the query to refresh the data
+      queryClient.invalidateQueries({ queryKey: ['game', id] });
+      queryClient.invalidateQueries({ queryKey: ['adminGames'] });
       
       // Navigate back to games list
       navigate('/admin/games');
